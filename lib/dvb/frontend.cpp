@@ -2682,9 +2682,9 @@ int eDVBFrontend::isCompatibleWith(ePtr<iDVBFrontendParameters> &feparm)
 			return 0;
 		}
 		if (!can_handle_atsc && !can_handle_dvbc_annex_b)
- 		{
- 			return 0;
- 		}
+		{
+			return 0;
+		}
 		if (parm.system == eDVBFrontendParametersATSC::System_DVB_C_ANNEX_B && !can_handle_dvbc_annex_b)
 		{
 			return 0;
