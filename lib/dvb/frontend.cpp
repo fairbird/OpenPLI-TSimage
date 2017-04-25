@@ -2777,7 +2777,7 @@ bool eDVBFrontend::setDeliverySystem(const char *type)
 	else if (!strcmp(type, "DVB-C"))
 	{
 		p[0].u.data = SYS_DVBC_ANNEX_A;
-		fetype = feCable;
+		fetype = feATSC;
 	}
 	else if (!strcmp(type, "ATSC"))
 	{
