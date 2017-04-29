@@ -1,5 +1,5 @@
 from Screens.Screen import Screen
-from Components.ConfigList import ConfigListScreen, ConfigList
+from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
 from Components.Sources.FrontendStatus import FrontendStatus
 from Components.Sources.StaticText import StaticText
@@ -55,7 +55,7 @@ class AutoDiseqc(Screen, ConfigListScreen):
 		eDVBFrontendParametersSatellite.System_DVB_S, eDVBFrontendParametersSatellite.Modulation_Auto, \
 		eDVBFrontendParametersSatellite.RollOff_auto, eDVBFrontendParametersSatellite.Pilot_Unknown, \
 		-1, 0, 1, 12400, 318, "Hotbird 13.0e"),
-		
+
 		# thor  3592 CT24
 		( 12072, 28000, \
 		eDVBFrontendParametersSatellite.Polarisation_Vertical, eDVBFrontendParametersSatellite.FEC_7_8, \
