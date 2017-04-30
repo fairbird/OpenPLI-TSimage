@@ -8,10 +8,10 @@ from Screens.MessageBox import MessageBox
 from Screens.InputBox import InputBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.InfoBar import InfoBar
-from Screens.InfoBarGenerics import InfoBarSeek, InfoBarScreenSaver, InfoBarAudioSelection, InfoBarAspectSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport, InfoBarResolutionSelection
+from Screens.InfoBarGenerics import InfoBarSeek, InfoBarScreenSaver, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport
 from Components.ActionMap import NumberActionMap, HelpableActionMap
 from Components.Label import Label
-from Components.Pixmap import Pixmap,MultiPixmap
+from Components.Pixmap import Pixmap, MultiPixmap
 from Components.FileList import FileList
 from Components.MediaPlayer import PlayList
 from Components.MovieList import AUDIO_EXTENSIONS
@@ -19,10 +19,9 @@ from Components.ServicePosition import ServicePositionGauge
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Playlist import PlaylistIOInternal, PlaylistIOM3U, PlaylistIOPLS
 from Components.AVSwitch import AVSwitch
-from Components.Harddisk import harddiskmanager
 from Components.config import config
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_CONFIG, SCOPE_PLAYLIST, SCOPE_CURRENT_SKIN
+from Tools.Directories import fileExists, resolveFilename, SCOPE_CONFIG, SCOPE_PLAYLIST, SCOPE_CURRENT_SKIN
 from Tools.BoundFunction import boundFunction
 from settings import MediaPlayerSettings
 import random
@@ -97,21 +96,19 @@ class MediaPlayerInfoBar(Screen):
 		Screen.__init__(self, session)
 		self.skinName = "MoviePlayer"
 
-class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarAudioSelection, InfoBarAspectSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport, HelpableScreen, InfoBarResolutionSelection):
+class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport, HelpableScreen):
 	ALLOW_SUSPEND = True
 	ENABLE_RESUME_SUPPORT = True
 
 	def __init__(self, session, args = None):
 		Screen.__init__(self, session)
 		InfoBarAudioSelection.__init__(self)
-		InfoBarAspectSelection.__init__(self)
 		InfoBarCueSheetSupport.__init__(self, actionmap = "MediaPlayerCueSheetActions")
 		InfoBarNotifications.__init__(self)
 		InfoBarBase.__init__(self)
 		InfoBarScreenSaver.__init__(self)
 		InfoBarSubtitleSupport.__init__(self)
 		HelpableScreen.__init__(self)
-		InfoBarResolutionSelection.__init__(self)
 		self.summary = None
 		self.oldService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.session.nav.stopService()
@@ -185,7 +182,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				"skipListbegin": (self.skip_listbegin, _("Jump to beginning of list")),
 				"skipListend": (self.skip_listend, _("Jump to end of list")),
 				"prevBouquet": (self.prevBouquet, self.prevBouquetHelpText),
- 				"nextBouquet": (self.nextBouquet, self.nextBouquetHelptext),
+				"nextBouquet": (self.nextBouquet, self.nextBouquetHelptext),
 				"delete": (self.deletePlaylistEntry, _("Delete playlist entry")),
 				"shift_stop": (self.clear_playlist, _("Clear playlist")),
 				"shift_record": (self.playlist.PlayListShuffle, _("Shuffle playlist")),
@@ -255,28 +252,28 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				iPlayableService.evUser+12: self.__evPluginError,
 				iPlayableService.evUser+13: self["coverArt"].embeddedCoverArt
 			})
-		
+
 		self.servicelist = None
- 		self.pipZapAvailable = False
- 		if InfoBar.instance is not None:
- 			self.servicelist = InfoBar.instance.servicelist
- 			if self.servicelist and hasattr(self.servicelist, 'dopipzap'):
- 				self.pipZapAvailable = SystemInfo.get("NumVideoDecoders", 1) > 1
- 
- 	def prevBouquetHelpText(self):
- 		if not self.shown and self.isPiPzap():
- 			value = _("when PiPzap enabled zap channel up...")
- 		else:
- 			value = _("Switch between filelist/playlist")
- 		return value
- 
- 	def nextBouquetHelptext(self):
- 		if not self.shown and self.isPiPzap():
- 			value = _("when PiPzap enabled zap channel down...")
- 		else:
- 			value = _("Switch between filelist/playlist")
- 		return value
- 
+		self.pipZapAvailable = False
+		if InfoBar.instance is not None:
+			self.servicelist = InfoBar.instance.servicelist
+			if self.servicelist and hasattr(self.servicelist, 'dopipzap'):
+				self.pipZapAvailable = SystemInfo.get("NumVideoDecoders", 1) > 1
+
+	def prevBouquetHelpText(self):
+		if not self.shown and self.isPiPzap():
+			value = _("when PiPzap enabled zap channel up...")
+		else:
+			value = _("Switch between filelist/playlist")
+		return value
+
+	def nextBouquetHelptext(self):
+		if not self.shown and self.isPiPzap():
+			value = _("when PiPzap enabled zap channel down...")
+		else:
+			value = _("Switch between filelist/playlist")
+		return value
+
 	def hideAndInfoBar(self):
 		self.hide()
 		self.mediaPlayerInfoBar.show()
@@ -586,12 +583,12 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		menu.append((_("Load playlist"), "loadplaylist"));
 		if config.usage.setup_level.index >= 1: # intermediate+
 			menu.append((_("Save playlist"), "saveplaylist"))
- 			menu.append((_("Delete saved playlist"), "deleteplaylist"))
+			menu.append((_("Delete saved playlist"), "deleteplaylist"))
 			menu.append((_("Edit settings"), "settings"))
 		if self.pipZapAvailable:
- 			menu.append((_("Menu") + " PiP", "pip"))
- 			if self.isPiPzap():
- 				menu.append((_("Open service list"), "servicelist"))
+			menu.append((_("Menu") + " PiP", "pip"))
+			if self.isPiPzap():
+				menu.append((_("Open service list"), "servicelist"))
 		self.timerHideMediaPlayerInfoBar()
 		self.session.openWithCallback(self.menuCallback, ChoiceBox, title="", list=menu)
 
@@ -631,9 +628,9 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		elif choice[1] == "audiocd":
 			self.playAudioCD()
 		elif choice[1] == "pip":
- 			self.activatePiP()
- 		elif choice[1] == "servicelist":
- 			self.openServiceList()
+			self.activatePiP()
+		elif choice[1] == "servicelist":
+			self.openServiceList()
 
 	def playAudioCD(self):
 		from enigma import eServiceReference
@@ -724,7 +721,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.playlistname = path[0].rsplit('.',1)[-2]
 			self.clear_playlist()
 			extension = path[0].rsplit('.',1)[-1]
-			if self.playlistparsers.has_key(extension):
+			if extension in self.playlistparsers:
 				playlist = self.playlistparsers[extension]()
 				list = playlist.open(path[1])
 				for x in list:
@@ -840,7 +837,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		if self.filelist.getServiceRef().type == 4098: # playlist
 			ServiceRef = self.filelist.getServiceRef()
 			extension = ServiceRef.getPath()[ServiceRef.getPath().rfind('.') + 1:]
-			if self.playlistparsers.has_key(extension):
+			if extension in self.playlistparsers:
 				playlist = self.playlistparsers[extension]()
 				list = playlist.open(ServiceRef.getPath())
 				for x in list:
@@ -1019,15 +1016,15 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.cdAudioTrackFiles = []
 			if self.isAudioCD:
 				self.clear_playlist()
-				
+
 	def isPiPzap(self):
- 		return self.pipZapAvailable and self.servicelist and self.servicelist.dopipzap
- 
- 	def openServiceList(self):
- 		if self.isPiPzap():
- 			self.session.execDialog(self.servicelist)
- 
- 	def activatePiP(self):
+		return self.pipZapAvailable and self.servicelist and self.servicelist.dopipzap
+
+	def openServiceList(self):
+		if self.isPiPzap():
+			self.session.execDialog(self.servicelist)
+
+	def activatePiP(self):
 		if self.pipZapAvailable:
 			if InfoBar.instance is not None:
 				modeslist = [ ]
@@ -1049,79 +1046,79 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 					keyslist.append('blue')
 				dlg = self.session.openWithCallback(self.pipAnswerConfirmed, ChoiceBox, list = modeslist, keys = keyslist)
 				dlg.setTitle(_("Menu") + " PiP")
- 
- 	def pipAnswerConfirmed(self, answer):
- 		answer = answer and answer[1]
- 		if answer is not None and InfoBar.instance is not None:
- 			slist = self.servicelist
- 			if answer == "pipzap":
- 				InfoBar.togglePipzap(InfoBar.instance)
- 			elif answer == "move":
- 				InfoBar.movePiP(InfoBar.instance)
- 			elif answer == "stop":
- 				if InfoBar.pipShown(InfoBar.instance):
- 					if slist and slist.dopipzap:
- 						slist.togglePipzap()
- 					if hasattr(self.session, 'pip'):
- 						del self.session.pip
- 					self.session.pipshown = False
- 			elif answer == "start":
- 				prev_playingref = self.session.nav.currentlyPlayingServiceOrGroup
- 				if prev_playingref:
- 					self.session.nav.currentlyPlayingServiceOrGroup = None
- 				InfoBar.showPiP(InfoBar.instance)
- 				if prev_playingref:
- 					self.session.nav.currentlyPlayingServiceOrGroup = prev_playingref
- 				if slist and not slist.dopipzap and hasattr(self.session, 'pip'):
- 					InfoBar.togglePipzap(InfoBar.instance)
- 
- 	def nextBouquet(self):
- 		if not self.shown and self.isPiPzap():
- 			slist = self.servicelist
- 			if slist.inBouquet():
- 				prev = slist.getCurrentSelection()
- 				if prev:
- 					prev = prev.toString()
- 					while True:
- 						if config.usage.quickzap_bouquet_change.value and slist.atEnd():
- 							slist.nextBouquet()
- 						else:
- 							slist.moveDown()
- 						cur = slist.getCurrentSelection()
- 						if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
- 							break
- 			else:
- 				slist.moveDown()
- 			slist.zap(enable_pipzap = True)
- 		else:
- 			if self.currList == "filelist":
- 				self.switchToPlayList()
- 			else:
- 				self.switchToFileList()
- 
- 	def prevBouquet(self):
- 		if not self.shown and self.isPiPzap():
- 			slist = self.servicelist
- 			if slist.inBouquet():
- 				prev = slist.getCurrentSelection()
- 				if prev:
- 					prev = prev.toString()
- 					while True:
- 						if config.usage.quickzap_bouquet_change.value:
- 							if slist.atBegin():
- 								slist.prevBouquet()
- 						slist.moveUp()
- 						cur = slist.getCurrentSelection()
- 						if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
- 							break
- 			else:
- 				slist.moveUp()
- 			slist.zap(enable_pipzap = True)
- 		else:
- 			if self.currList == "filelist":
- 				self.switchToPlayList()
- 			else:
- 				self.switchToFileList()
+
+	def pipAnswerConfirmed(self, answer):
+		answer = answer and answer[1]
+		if answer is not None and InfoBar.instance is not None:
+			slist = self.servicelist
+			if answer == "pipzap":
+				InfoBar.togglePipzap(InfoBar.instance)
+			elif answer == "move":
+				InfoBar.movePiP(InfoBar.instance)
+			elif answer == "stop":
+				if InfoBar.pipShown(InfoBar.instance):
+					if slist and slist.dopipzap:
+						slist.togglePipzap()
+					if hasattr(self.session, 'pip'):
+						del self.session.pip
+					self.session.pipshown = False
+			elif answer == "start":
+				prev_playingref = self.session.nav.currentlyPlayingServiceOrGroup
+				if prev_playingref:
+					self.session.nav.currentlyPlayingServiceOrGroup = None
+				InfoBar.showPiP(InfoBar.instance)
+				if prev_playingref:
+					self.session.nav.currentlyPlayingServiceOrGroup = prev_playingref
+				if slist and not slist.dopipzap and hasattr(self.session, 'pip'):
+					InfoBar.togglePipzap(InfoBar.instance)
+
+	def nextBouquet(self):
+		if not self.shown and self.isPiPzap():
+			slist = self.servicelist
+			if slist.inBouquet():
+				prev = slist.getCurrentSelection()
+				if prev:
+					prev = prev.toString()
+					while True:
+						if config.usage.quickzap_bouquet_change.value and slist.atEnd():
+							slist.nextBouquet()
+						else:
+							slist.moveDown()
+						cur = slist.getCurrentSelection()
+						if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
+							break
+			else:
+				slist.moveDown()
+			slist.zap(enable_pipzap = True)
+		else:
+			if self.currList == "filelist":
+				self.switchToPlayList()
+			else:
+				self.switchToFileList()
+
+	def prevBouquet(self):
+		if not self.shown and self.isPiPzap():
+			slist = self.servicelist
+			if slist.inBouquet():
+				prev = slist.getCurrentSelection()
+				if prev:
+					prev = prev.toString()
+					while True:
+						if config.usage.quickzap_bouquet_change.value:
+							if slist.atBegin():
+								slist.prevBouquet()
+						slist.moveUp()
+						cur = slist.getCurrentSelection()
+						if not cur or (not (cur.flags & 64)) or cur.toString() == prev:
+							break
+			else:
+				slist.moveUp()
+			slist.zap(enable_pipzap = True)
+		else:
+			if self.currList == "filelist":
+				self.switchToPlayList()
+			else:
+				self.switchToFileList()
 
 class MediaPlayerLCDScreen(Screen):
 	skin = (
