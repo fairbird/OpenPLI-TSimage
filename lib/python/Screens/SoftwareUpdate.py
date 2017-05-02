@@ -276,7 +276,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			text = ""
 			for i in [x[0] for x in sorted(self.ipkg.getFetchedList(), key=lambda d: d[0])]:
 				text = text and text + "\n" + i or i
-			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Packages to update"), True)
+			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Latest upgrade log"), True)
 		elif answer[1] == "log":
 			text = ""
 			for i in open("/home/root/ipkgupgrade.log", "r").readlines():
