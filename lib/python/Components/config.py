@@ -783,11 +783,11 @@ class ConfigFloat(ConfigSequence):
     def getFloatInt(self):
 		return int(self.value[0] * float(self.limits[1][1] + 1) + self.value[1])
 
-	def setFloatInt(self, val):
+    def setFloatInt(self, val):
 		self.value[0] = val / float(self.limits[1][1] + 1)
 		self.value[1] = val % float(self.limits[1][1] + 1)
 
-	floatint = property(getFloatInt, setFloatInt)
+	        floatint = property(getFloatInt, setFloatInt)
 
 # an editable text...
 class ConfigText(ConfigElement, NumericalTextInput):
