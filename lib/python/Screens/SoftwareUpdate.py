@@ -89,11 +89,11 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			# run in parallel to the package update.
 			status = urlopen("http://openpli.org/status/").read().split('!', 1)
 			if getBoxType() in status[0].split(','):
-				message = len(status) > 1 and status[1] or _("The current beta image might not be stable.\nFor more information see %s.") % ("www.openpli.org")
+				message = len(status) > 1 and status[1] or _("The current beta image might not be stable.\nFor more information see %s.") % ("www.tunisia-sat")
 				picon = MessageBox.TYPE_ERROR
 				default = False
 		except:
-			message = _("The status of the current beta image could not be checked because %s can not be reached.") % ("www.openpli.org")
+			message = _("The status of the current beta image could not be checked because %s can not be reached.") % ("www.tunisia-sat")
 			picon = MessageBox.TYPE_ERROR
 			default = False
 		socket.setdefaulttimeout(currentTimeoutDefault)
@@ -105,7 +105,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 
 	def showDisclaimer(self, justShow=False):
 		if config.usage.show_update_disclaimer.value or justShow:
-			message = _("The OpenPLi team would like to point out that upgrading to the latest nightly build comes not only with the latest features, but also with some risks. After the update, it is possible that your device no longer works as expected. We recommend you create backups with Autobackup or Backupsuite. This allows you to quickly and easily restore your device to its previous state, should you experience any problems. If you encounter a 'bug', please report the issue on www.openpli.org.\n\nDo you understand this?")
+			message = _("The OpenTS Image team would like to point out that upgrading to the latest nightly build comes not only with the latest features, but also with some risks. After the update, it is possible that your device no longer works as expected. We recommend you create backups with Autobackup or Backupsuite. This allows you to quickly and easily restore your device to its previous state, should you experience any problems. If you encounter a 'bug', please report the issue on www.tunisia-sat.\n\nDo you understand this?")
 			list = not justShow and [(_("no"), False), (_("yes"), True), (_("yes") + " " + _("and never show this message again"), "never")] or []
 			self.session.openWithCallback(boundFunction(self.disclaimerCallback, justShow), MessageBox, message, list=list)
 		else:
