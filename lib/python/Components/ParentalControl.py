@@ -1,6 +1,5 @@
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigPIN, ConfigText, ConfigYesNo, ConfigSubList, ConfigInteger
 from Components.ServiceList import refreshServiceList
-#from Screens.ChannelSelection import service_types_tv
 from Screens.InputBox import PinInput
 from Screens.MessageBox import MessageBox
 from Tools.BoundFunction import boundFunction
@@ -9,7 +8,7 @@ from Tools import Notifications
 from Tools.Directories import resolveFilename, SCOPE_CONFIG
 from Tools.Notifications import AddPopup
 from enigma import eTimer, eServiceCenter, iServiceInformation, eServiceReference, eDVBDB
-import time, os
+import time
 
 TYPE_SERVICE = "SERVICE"
 TYPE_BOUQUETSERVICE = "BOUQUETSERVICE"
