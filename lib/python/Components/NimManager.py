@@ -620,7 +620,7 @@ class NIM(object):
 	def getFullDescription(self):
 		return self.empty and _("(empty)") or "%s (%s)" % (self.description, self.isSupported() and self.friendly_type or _("not supported"))
 
-		def getFriendlyFullDescription(self):
+	def getFriendlyFullDescription(self):
 		return "%s: %s" % (self.slot_name, self.getFullDescription())
 
 	def getFriendlyFullDescriptionCompressed(self):
