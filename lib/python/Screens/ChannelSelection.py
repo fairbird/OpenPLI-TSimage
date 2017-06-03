@@ -2077,13 +2077,16 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
         if self.servicePath is not None:
             tmp = self.servicePath[:]
             tmp.append(ref)
-            try:
-                del self.history[self.history_pos + 1:]
-            except:
-                pass
-
             self.history.append(tmp)
             hlen = len(self.history)
+            x = 0
+            while x < hlen - 1:
+                if self.history[x][-1] == ref:
+                    del self.history[x]
+                    hlen -= 1
+                else:
+                    x += 1
+
             if hlen > HISTORYSIZE:
                 del self.history[0]
                 hlen -= 1
@@ -2101,12 +2104,13 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
         self.delhistpoint = self.history_pos+1
 
     def historyNext(self):
+        self.delhistpoint = None
         hlen = len(self.history)
         if hlen > 1 and self.history_pos < hlen - 1:
             self.history_pos += 1
             self.setHistoryPath()
 
-    def setHistoryPath(self, doZap = True):
+    def setHistoryPath(self, doZap=True):
         path = self.history[self.history_pos][:]
         ref = path.pop()
         del self.servicePath[:]
@@ -2116,8 +2120,9 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
         cur_root = self.getRoot()
         if cur_root and cur_root != root:
             self.setRoot(root)
+        self.servicelist.setCurrent(ref)
         if doZap:
-            self.session.nav.playService(ref, adjust=False)
+            self.session.nav.playService(ref)
         if self.dopipzap:
             self.setCurrentSelection(self.session.pip.getCurrentService())
         else:
@@ -2545,7 +2550,8 @@ class SimpleChannelSelection(ChannelSelectionBase, SelectionEventInfo):
         self.showFavourites()
 
 class HistoryZapSelector(Screen):
-    def __init__(self, session, items=[], sel_item=0, mark_item=0, invert_items=False, redirect_buttons=False, wrap_around=True):
+    def __init__(self, session, items=None, sel_item=0, mark_item=0, invert_items=False, redirect_buttons=False, wrap_around=True):
+        if not items: items = []
         Screen.__init__(self, session)
         self.redirectButton = redirect_buttons
         self.invertItems = invert_items
@@ -2569,7 +2575,6 @@ class HistoryZapSelector(Screen):
 
             info = serviceHandler.info(x[-1])
             if info:
-                orbpos = self.getOrbitalPos(ServiceReference(x[1]))
                 serviceName = info.getName(x[-1])
                 if serviceName is None:
                     serviceName = ""
@@ -2607,15 +2612,15 @@ class HistoryZapSelector(Screen):
             if picon != "":
                 png = loadPNG(picon)
             if self.invertItems:
-                self.list.insert(0, (x[1], cnt == mark_item and "»" or "", x[0], eventName, descriptionName, durationTime, png, orbpos))
+                self.list.insert(0, (x[1], cnt == mark_item and "»" or "", x[0], eventName, descriptionName, durationTime, png))
             else:
-                self.list.append((x[1], cnt == mark_item and "»" or "", x[0], eventName, descriptionName, durationTime, png, orbpos))
+                self.list.append((x[1], cnt == mark_item and "»" or "", x[0], eventName, descriptionName, durationTime, png))
             cnt += 1
         self["menu"] = List(self.list, enableWrapAround=wrap_around)
         self.onShown.append(self.__onShown)
 
     def __onShown(self):
-        self["menu"].index = self.currentPos
+        self['menu'].index = self.currentPos
 
     def prev(self):
         if self.redirectButton:
@@ -2630,13 +2635,13 @@ class HistoryZapSelector(Screen):
             self.down()
 
     def up(self):
-        self["menu"].selectPrevious()
+        self['menu'].selectPrevious()
 
     def down(self):
-        self["menu"].selectNext()
+        self['menu'].selectNext()
 
     def getCurrent(self):
-        cur = self["menu"].current
+        cur = self['menu'].current
         return cur and cur[0]
 
     def okbuttonClick(self):
@@ -2652,16 +2657,16 @@ class HistoryZapSelector(Screen):
         else:
             refstr = str(ref)
         refstr = refstr and GetWithAlternative(refstr)
-        print 'refstr:',refstr
+        print 'refstr:', refstr
         if '%3a//' in refstr:
-           return "%s" % _("Stream")
-        op = int(refstr.split(':', 10)[6][:-4] or "0",16)
-        if op == 0xeeee:
-           return "%s" % _("DVB-T")
-        if op == 0xffff:
-           return "%s" % _("DVB-C")
+            return '%s' % _('Stream')
+        op = int(refstr.split(':', 10)[6][:-4] or '0', 16)
+        if op == 61166:
+            return '%s' % _('DVB-T')
+        if op == 65535:
+            return '%s' % _('DVB-C')
         direction = 'E'
         if op > 1800:
-           op = 3600 - op
-           direction = 'W'
-        return ("%d.%d\xc2\xb0%s") % (op // 10, op % 10, direction)
+            op = 3600 - op
+            direction = 'W'
+        return '%d.%d\xc2\xb0%s' % (op // 10, op % 10, direction)
