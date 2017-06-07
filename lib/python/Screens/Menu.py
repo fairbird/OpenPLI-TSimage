@@ -108,7 +108,7 @@ class Menu(Screen, ProtectedScreen):
     def nothing(self):
         pass
 
-    def openDialog(self, *dialog):
+    def openDialog(self, *dialog): # in every layer needed
         self.session.openWithCallback(self.menuClosed, *dialog)
 
     def openSetup(self, dialog):
@@ -257,7 +257,7 @@ class Menu(Screen, ProtectedScreen):
         self.list = []
         self.menuID = None
         count = 0
-        for x in self.parentmenu:
+        for x in self.parentmenu: #walk through the actual nodelist
             if not x.tag:
                 continue
             if x.tag == 'item':
