@@ -92,12 +92,12 @@ class Menu(Screen, ProtectedScreen):
         global lastMenuID
         print 'okbuttonClick'
         if self.number:
-           self["menu"].setIndex(self.number - 1)
-           self.resetNumberKey()
-           selection = self['menu'].getCurrent()
+                self["menu"].setIndex(self.number - 1)
+        self.resetNumberKey()
+        selection = self['menu'].getCurrent()
         if selection is not None:
-           lastMenuID = selection[2]
-           selection[1]()
+                lastMenuID = selection[2]
+                selection[1]()
 
     def execText(self, text):
         exec text
@@ -252,8 +252,8 @@ class Menu(Screen, ProtectedScreen):
         self.setTitle(title)
 
         self.number = 0
-    self.nextNumberTimer = eTimer()
-    self.nextNumberTimer.callback.append(self.okbuttonClick)
+        self.nextNumberTimer = eTimer()
+        self.nextNumberTimer.callback.append(self.okbuttonClick)
 
     def createMenuList(self):
         self.list = []
@@ -337,8 +337,8 @@ class Menu(Screen, ProtectedScreen):
         else:
             self.list.sort(key=lambda x: int(x[3]))
 
-    if config.usage.menu_show_numbers.value:
-        self.list = [(str(x[0] + 1) + " " +x[1][0], x[1][1], x[1][2]) for x in enumerate(self.list)]
+        if config.usage.menu_show_numbers.value:
+            self.list = [(str(x[0] + 1) + " " +x[1][0], x[1][1], x[1][2]) for x in enumerate(self.list)]
 
         self['menu'].updateList(self.list)
 
@@ -346,9 +346,9 @@ class Menu(Screen, ProtectedScreen):
         self.number = self.number * 10 + number
         if self.number and self.number <= len(self["menu"].list):
             if number * 10 > len(self["menu"].list) or self.number >= 10:
-                self.okbuttonClick()
+                  self.okbuttonClick()
             else:
-                self.nextNumberTimer.start(1500, True)
+                  self.nextNumberTimer.start(1500, True)
         else:
             self.resetNumberKey()
 
