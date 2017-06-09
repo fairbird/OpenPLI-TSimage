@@ -1,4 +1,5 @@
 from Screen import Screen
+from Screens.MessageBox import MessageBox
 from Components.config import config
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
@@ -130,7 +131,6 @@ class About(Screen):
     def showTroubleshoot(self):
         self.session.open(Troubleshoot)
 
-
 class TranslationInfo(Screen):
 
     def __init__(self, session):
@@ -179,7 +179,6 @@ class CommitInfo(Screen):
          ('enigma2-plugins', 'Enigma2 Plugins'),
          ('aio-grab', 'Aio Grab'),
          ('gst-plugin-dvbmediasink', 'Gst Plugin Dvbmediasink'),
-         ('HenksatSettings', 'Henksat Settings'),
          ('enigma2-plugin-extensions-xmltvimport', 'Plugin Xmltvimport'),
          ('enigma2-plugin-skins-magic', 'Skin Magic SD'),
          ('tuxtxt', 'Tuxtxt')]
@@ -199,6 +198,7 @@ class CommitInfo(Screen):
             commitlog += url.split('/')[-2] + '\n'
             commitlog += 80 * '-' + '\n'
             try:
+		# OpenPli 5.0 uses python 2.7.11 and here we need to bypass the certificate check
                 from ssl import _create_unverified_context
                 log = loads(urlopen(url, timeout=5, context=_create_unverified_context()).read())
             except:
@@ -218,7 +218,7 @@ class CommitInfo(Screen):
         self['AboutScrollLabel'].setText(commitlog)
 
     def updateCommitLogs(self):
-        if self.cachedProjects.has_key(self.projects[self.project][1]):
+        if self.projects[self.project][1] in self.cachedProjects:
             self['AboutScrollLabel'].setText(self.cachedProjects[self.projects[self.project][1]])
         else:
             self['AboutScrollLabel'].setText(_('Please wait'))
