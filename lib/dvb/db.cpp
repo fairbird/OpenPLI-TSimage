@@ -1972,7 +1972,7 @@ PyObject *eDVBDB::getFlag(const eServiceReference &ref)
 		if (it != m_services.end())
 			return PyInt_FromLong(it->second->m_flags);
 	}
-	return PyInt_FromLong(0);
+	return PyInt_FromLong(-1);
 }
 
 PyObject *eDVBDB::getCachedPid(const eServiceReference &ref, int id)
