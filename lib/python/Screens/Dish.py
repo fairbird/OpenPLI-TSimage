@@ -222,7 +222,7 @@ class Dish(Screen):
 	def getTunerName(self):
 		nr = self.getCurrentTuner()
 		if nr is not None:
-			return _("Tuner") + " " + chr(nr+65))
+			return _("Tuner") + " " + chr(nr+65)
 		return ""
 
 	def OrbToStr(self, orbpos):
