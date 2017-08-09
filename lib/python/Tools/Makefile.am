@@ -6,4 +6,4 @@ install_PYTHON = \
 	RedirectOutput.py StbHardware.py Import.py Event.py CList.py \
 	LoadPixmap.py Profile.py HardwareInfo.py Transponder.py ASCIItranslit.py \
 	Downloader.py Trashcan.py GetEcmInfo.py Alternatives.py TextBoundary.py \
-	DreamboxHardware.py Log.py LogConfig.py CountryCodes.py
+	DreamboxHardware.py Log.py LogConfig.py CountryCodes.py Multiboot.py
