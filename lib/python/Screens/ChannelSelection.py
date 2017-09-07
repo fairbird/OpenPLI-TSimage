@@ -2577,6 +2577,9 @@ class SimpleChannelSelection(ChannelSelectionBase, SelectionEventInfo):
         self.setRadioMode()
         self.showFavourites()
 
+    def getMutableList(self, root=None):
+        return None
+
 class HistoryZapSelector(Screen):
     def __init__(self, session, items=None, sel_item=0, mark_item=0, invert_items=False, redirect_buttons=False, wrap_around=True):
         if not items: items = []
