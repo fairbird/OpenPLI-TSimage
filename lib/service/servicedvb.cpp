@@ -1449,6 +1449,7 @@ RESULT eDVBServicePlay::stop()
 	m_event((iPlayableService*)this, evStopped);
 	return 0;
 }
+
 RESULT eDVBServicePlay::setTarget(int target, bool noaudio = false)
 {
 	m_decoder_index = target;
