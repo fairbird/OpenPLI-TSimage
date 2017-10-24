@@ -38,13 +38,13 @@ class About(Screen):
 
         AboutText += _('Hardware: ') + about.getHardwareTypeString() + '\n'
         AboutText += _('CPU: ') + about.getCPUInfoString() + '\n'
-	AboutText += _("Build date: ") + about.getBuildDateString() + "\n"
+        AboutText += _("Build date: ") + about.getBuildDateString() + "\n"
 
         # [WanWizard] Removed until we find a reliable way to determine the installation date
-	# AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
+        # AboutText += _("Installed: ") + about.getFlashDateString() + "\n"
 
-	# [WanWizard] No longer that relevant as we now have an accurate build date
-	# as I'm not sure this variable isn't used elsewhere, I haven't removed it
+        # [WanWizard] No longer that relevant as we now have an accurate build date
+        # as I'm not sure this variable isn't used elsewhere, I haven't removed it
 
         #ImageVersion = _('Last upgrade: ') + about.getImageVersionString()
         #self['ImageVersion'] = StaticText(ImageVersion)
@@ -52,20 +52,20 @@ class About(Screen):
         self["ImageVersion"] = StaticText('Firmware: ' + TSVer + ' ' + TSRev)
 
         EnigmaVersion = _("Enigma version: ") + about.getEnigmaVersionString()
-	self["EnigmaVersion"] = StaticText(EnigmaVersion)
-	AboutText += "\n" + EnigmaVersion + "\n"
+        self["EnigmaVersion"] = StaticText(EnigmaVersion)
+        AboutText += "\n" + EnigmaVersion + "\n"
 
-	AboutText += _("Kernel version: ") + about.getKernelVersionString() + "\n"
+        AboutText += _("Kernel version: ") + about.getKernelVersionString() + "\n"
 
-	AboutText += _("DVB driver version: ") + about.getDriverInstalledDate() + "\n"
+        AboutText += _("DVB driver version: ") + about.getDriverInstalledDate() + "\n"
 
-	GStreamerVersion = _("GStreamer version: ") + about.getGStreamerVersionString().replace("GStreamer","")
-	self["GStreamerVersion"] = StaticText(GStreamerVersion)
-	AboutText += GStreamerVersion + "\n"
+        GStreamerVersion = _("GStreamer version: ") + about.getGStreamerVersionString().replace("GStreamer","")
+        self["GStreamerVersion"] = StaticText(GStreamerVersion)
+        AboutText += GStreamerVersion + "\n"
 
         AboutText += _('Python version: ') + about.getPythonVersionString() + '\n'
 
-	AboutText += _("Enigma (re)starts: %d\n") % config.misc.startCounter.value
+        AboutText += _("Enigma (re)starts: %d\n") % config.misc.startCounter.value
 
         fp_version = getFPVersion()
         if fp_version is None:
@@ -209,7 +209,7 @@ class CommitInfo(Screen):
             commitlog += url.split('/')[-2] + '\n'
             commitlog += 80 * '-' + '\n'
             try:
-		# OpenPli 5.0 uses python 2.7.11 and here we need to bypass the certificate check
+        # OpenPli 5.0 uses python 2.7.11 and here we need to bypass the certificate check
                 from ssl import _create_unverified_context
                 log = loads(urlopen(url, timeout=5, context=_create_unverified_context()).read())
             except:
