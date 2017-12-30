@@ -51,7 +51,12 @@ class About(Screen):
         #AboutText += ImageVersion + '\n'
         self["ImageVersion"] = StaticText('Firmware: ' + TSVer + ' ' + TSRev)
 
-        EnigmaVersion = _("Enigma version: ") + about.getEnigmaVersionString()
+        EnigmaVersion = about.getEnigmaVersionString().rsplit("-", 2)
+		if len(EnigmaVersion) == 3:
+			EnigmaVersion = EnigmaVersion[0] + " " + EnigmaVersion[2] + "-" + EnigmaVersion[1]
+		else:
+			EnigmaVersion = " ".join(EnigmaVersion)
+		EnigmaVersion = _("Enigma version: ") + EnigmaVersion
         self["EnigmaVersion"] = StaticText(EnigmaVersion)
         AboutText += "\n" + EnigmaVersion + "\n"
 
