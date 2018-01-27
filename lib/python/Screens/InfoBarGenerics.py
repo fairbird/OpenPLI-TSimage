@@ -1430,7 +1430,7 @@ class InfoBarSeek():
             self.ScreenSaverTimerStart()
         return True
 
-    def playpauseStreamService(self):
+    def playpauseService(self):
         if self.seekstate != self.SEEK_STATE_PLAY:
             self.unPauseService()
         else:
