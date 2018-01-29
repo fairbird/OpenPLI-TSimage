@@ -56,7 +56,7 @@ class PluginComponent:
             for pluginname in os_listdir(directory_category):
                 path = directory_category + '/' + pluginname
                 if os_path.isdir(path):
-                    if fileExists(path + '/plugin.pyc') or fileExists(path + '/plugin.pyo') or fileExists(path + '/plugin.py'):
+                    if fileExists(path + '/plugin.pyc') or fileExists(path + '/plugin.pyo') or fileExists(path + '/plugin.py') or fileExists(path + '/plugin.so'):
                         try:
                             plugin = my_import('.'.join(['Plugins',
                              c,
